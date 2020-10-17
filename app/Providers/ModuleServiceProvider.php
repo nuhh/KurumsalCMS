@@ -21,7 +21,7 @@ class ModuleServiceProvider extends ServiceProvider
 		} else {
 			// kurulum yapılmamışsa yönlendirmeleri ekleyelim
             Route::middleware('web')
-                ->namespace('App\Http\Controller')
+                ->namespace('App\Http\Controllers')
                 ->group(base_path('routes/setup.php'));
 		}
 	}

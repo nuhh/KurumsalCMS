@@ -13,4 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('install', 'SetupController@index');
+Route::get('install', 'SetupController@index')->name('install');
+Route::post('install', 'SetupController@install');
