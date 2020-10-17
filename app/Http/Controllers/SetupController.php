@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\BackendUsers;
+use App\Models\Slugs;
+use App\Models\SlugTypes;
 
 
 class SetupController extends Controller
@@ -51,12 +53,23 @@ class SetupController extends Controller
             $table->integer('id');
         });
 
+        Slugs::create([
+        	'slug' => '',
+        	'type_id' => 1,
+        	'id' => 0
+        ]);
+
         Schema::create('slug_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('method');
             $table->timestamps();
         });
+
+        SlugTypes::create([
+        	'name' => 'Ana Sayfa',
+        	'method' => 'homepage'
+        ]);
 
         BackendUsers::create([
             'username' => $username,
