@@ -175,6 +175,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+
+        // kurumsalcms
+        App\Providers\ModuleServiceProvider::class,
+
     ],
 
     /*
