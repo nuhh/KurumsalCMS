@@ -4,79 +4,69 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
-use App\BackendUsers;
+use App\Models\BackendUsers;
 use Illuminate\Database\Schema\Blueprint;
-use App\Modules;
-use App\Pages;
-use App\Slugs;
+use App\Models\Modules;
+use App\Models\Pages;
+use App\Models\Slugs;
 
 class PagesController extends Controller
 {
 
-	public function homepage()
+	public function index()
 	{
-		return view('homepage');
-	}
-	
-	public function hello( $one, $two = null, $three = null, $four = null, $five = null, $six = null, $seven = null, $eight = null, $nine = null, $ten = null, $eleven = null )
-	{
-		view()->share('one', $one);
-		view()->share('two', $two);
-		view()->share('three', $three);
-		view()->share('four', $four);
-		view()->share('five', $five);
-		view()->share('six', $six);
-		view()->share('seven', $seven);
-		view()->share('eight', $eight);
-		view()->share('nine', $nine);
-		view()->share('ten', $ten);
-		view()->share('eleven', $eleven);
+		$data['all'] = Pages::all();
 
-		$find = Slugs::find($one);
-
-		if( $find == null ) {
-			// 404 salla
-			return 'bu icerik yoohhh!';
-		} else {
-			if ( $find['type'] == 'blog' ) {
-				return $this->blog( $one );
-			} elseif( $find['type'] == 'blog-category' ) {
-				return $this->blogCategory( $one, $two );
-			} elseif( $find['type'] == 'page' ) {
-				return $this->page( $one );
-			} elseif( $find['type'] == 'product-category' ) {
-				return $this->productCategory( $one, $two );
-			} elseif( $find['type'] == 'product' ) {
-				return $this->product( $one );
-			}
-		}
+		return view('system.pages.index', $data);
 	}
 
-	protected function product( $one )
+	public function create()
 	{
-		return view('product');
+		return view('system.pages.create');
 	}
 
-	protected function productCategory( $one, $two )
+	public function store()
 	{
-		return view('product-category');
+		$category = Pages::create([
+			'title' => request('title'),
+			'slug' => request('slug'),
+			'content' => request('content'),
+		]);
+
+		Slugs::create([
+			'slug' => request('slug'),
+			'type' => 'page',
+			'id' => $category['id']
+		]);
+
+		return redirect()->route('page.index');
 	}
 
-	protected function page( $one )
+	public function edit($id)
 	{
-		return view('page');
+		$data['get'] = Pages::find($id);
+
+		return view('system.pages.edit', $data);
 	}
 
-	protected function blog( $slug )
+	public function update($id)
 	{
-		return view('blog');
+		Pages::find($id)->update([
+			'title' => serialize(request('title')),
+			'slug' => serialize(request('slug')),
+			'seo_keywords' => serialize(request('seo_keywords')),
+			'seo_description' => serialize(request('seo_description')),
+			'content' => serialize(request('content')),
+			'extra' => serialize(request('extra')),
+		]);
+
+		return redirect()->route('pages');
 	}
 
-	protected function blogCategory( $slug, $page )
+	public function destroy($id)
 	{
-		$page = ($page == null) ? 1 : $page;
+		Pages::find($id)->delete();
 
-		return view('blog-category');
+		return redirect()->route('page.index');
 	}
-
 }

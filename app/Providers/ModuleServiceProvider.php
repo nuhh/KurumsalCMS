@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
+use App\Models\Modules;
+
 class ModuleServiceProvider extends ServiceProvider
 {
 	/**

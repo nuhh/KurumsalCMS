@@ -61,6 +61,8 @@
 
     @include('system.theme.bottom')
 
+    @yield('pageJs')
+
   </body>
 
 </html>

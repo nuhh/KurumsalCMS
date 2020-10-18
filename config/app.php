@@ -177,6 +177,7 @@ return [
 
 
         // kurumsalcms
+        App\Providers\PagesServiceProvider::class,
         App\Providers\ModuleServiceProvider::class,
 
     ],
